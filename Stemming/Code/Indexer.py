@@ -13,15 +13,15 @@ class Indexer:
     def __init__(self, collection_path):
         self.vocabulary = Counter()
         self.prefixes = {}
-        self.collection_path = collection_path
         self.file_names = []
+        self.collection_path = collection_path
 
         # Execute the logic
         # self.read_collection()
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-    def process_collection(self, n_files=300):
+    def process_collection(self, results_name, n_files=300):
 
         self.extract_file_names()
         self.file_names = self.file_names[0:n_files]
@@ -30,10 +30,11 @@ class Indexer:
             with open(file_name, 'r', encoding='utf-8') as file:
                 content = file.read()
                 self.process_content(content)
-        #
+
+        # Make stemming to all the vocabulary
         self.apply_stemming()
-        self.prefixes = self.sort_dictionary(self.prefixes, 0)[0]
-        self.save_vocabulary()
+        self.prefixes, results_list = self.sort_dictionary(self.prefixes, 0)
+        self.save_results(results_name, results_list)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -81,10 +82,18 @@ class Indexer:
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-    def save_vocabulary(self):
-        file = open('Results\\words.txt', 'w')
-        file.write(str(self.prefixes))
-        file.close()
+    def save_results(self, results_name, results_list):
+
+        final_string = ''''''
+
+        for prefix, words in self.prefixes.items():
+            frecuencie = 0
+            for word in words:
+                frecuencie += self.vocabulary[word]
+            final_string += prefix + ' -> ' + str(len(words)) + ' -> ' + str(frecuencie) + ' -> ' + str(words) + '\n'
+
+        with open('Results\\' + results_name + '.txt', 'w', encoding='utf-8') as file:
+            file.write(final_string)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -94,7 +103,7 @@ class Indexer:
         Orders a dictionary by it's key or term, depending on the value inserted.
         :param dict: dictionary to be sorted
         :param value: wich value use to order the dictionary. 0 is by key and 1 by term.
-        :return: tuple of list of tuples(key:term) and a dictionary object ordered.
+        :return: tuple of a dictionary object ordered and a list of tuples(key:term).
         '''
 
         sorted_values = sorted(dict.items(), key=operator.itemgetter(value))
