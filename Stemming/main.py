@@ -7,9 +7,9 @@ def main():
 
     collection_path = 'E:\\spanish_billion_words'
     idx = Indexer(collection_path)
-    idx.read_collection(1)
+    idx.process_collection(3)
 
-    print('Finalizado!\nDuracion: ', (time.clock() - start) / 1, ' minutos.')
+    print('Finalizado!\nDuracion: ', (time.clock() - start) / 60, ' minutos.')
 
 main()
 

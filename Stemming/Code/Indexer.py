@@ -21,7 +21,7 @@ class Indexer:
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-    def read_collection(self, n_files=300):
+    def process_collection(self, n_files=300):
 
         self.extract_file_names()
         self.file_names = self.file_names[0:n_files]
@@ -30,7 +30,9 @@ class Indexer:
             with open(file_name, 'r', encoding='utf-8') as file:
                 content = file.read()
                 self.process_content(content)
-        self.vocabulary = self.sort_dictionary(self.vocabulary, 0)[0]
+        #
+        self.apply_stemming()
+        self.prefixes = self.sort_dictionary(self.prefixes, 0)[0]
         self.save_vocabulary()
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -68,13 +70,20 @@ class Indexer:
     def apply_stemming(self):
 
         stemmer = SnowballStemmer('spanish')
+        keys = list(self.vocabulary)
 
+        for key in keys:
+            stemmed = stemmer.stem(key)
+            if stemmed in self.prefixes:
+                self.prefixes[stemmed] += [key]
+            else:
+                self.prefixes[stemmed] = [key]
 
 # ----------------------------------------------------------------------------------------------------------------------
 
     def save_vocabulary(self):
         file = open('Results\\words.txt', 'w')
-        file.write(str(self.vocabulary))
+        file.write(str(self.prefixes))
         file.close()
 
 # ----------------------------------------------------------------------------------------------------------------------
