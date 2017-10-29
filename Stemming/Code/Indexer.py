@@ -16,9 +16,6 @@ class Indexer:
         self.file_names = []
         self.collection_path = collection_path
 
-        # Execute the logic
-        # self.read_collection()
-
 # ----------------------------------------------------------------------------------------------------------------------
 
     def process_collection(self, results_name, n_files=300):
@@ -33,8 +30,8 @@ class Indexer:
 
         # Make stemming to all the vocabulary
         self.apply_stemming()
-        self.prefixes, results_list = self.sort_dictionary(self.prefixes, 0)
-        self.save_results(results_name, results_list)
+        self.prefixes = self.sort_dictionary(self.prefixes, 0)[0]
+        self.save_results(results_name)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -82,9 +79,9 @@ class Indexer:
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-    def save_results(self, results_name, results_list):
+    def save_results(self, results_name):
 
-        final_string = ''''''
+        final_string = 'Palabras distintas:' + str(len(self.vocabulary)) + '\n'
 
         for prefix, words in self.prefixes.items():
             frecuencie = 0
