@@ -28,10 +28,6 @@ Donde cada parámetro es:
 * ruta_colección: se refiere a la ruta sobre la que se va a realizar la ejecución.
 Esta ruta debe tener subcarpetas y dentro de estas subcarpetas se encuentran los
 archivos a leer.
-
-### Resultados de casos de prueba
-
-El rendimien
  
 
 [NTLK]: http://www.nltk.org/
